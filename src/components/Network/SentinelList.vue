@@ -7,8 +7,8 @@
                 <li class="search_bar">
                     <input v-model="search" type="text" id="search_bar_input"/>
                     <label for="search_bar_input">
-                        <font-awesome-icon v-if="!search.length" :icon="['fal', 'search']"/>
-                        <font-awesome-icon v-else :icon="['fal', 'times']" @click="search = ''"/>
+                        <font-awesome-icon v-if="!search.length" :icon="['fas', 'search']"/>
+                        <font-awesome-icon v-else :icon="['fas', 'times']" @click="search = ''"/>
                     </label>
                 </li>
             </ul>
@@ -16,7 +16,7 @@
         <ul v-if="sentinels.length > 0" class="list">
             <SentineCard v-for="(sentinel, index) in sentinels" :key="sentinel.address" :sentinel="sentinel" :style="`animation-delay: ${index/15}s`"/>
         </ul>
-        <Empty v-else desc="No sentinel connected" icon="wifi-slash"/>
+        <Empty v-else desc="No sentinel connected" icon="question"/>
     </div>
 </template>
 

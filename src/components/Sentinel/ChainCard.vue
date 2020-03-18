@@ -1,7 +1,7 @@
 <template>
     <li class="list_card" @click="goToChain()">
         <div class="chain_icon">
-            <font-awesome-icon class="icon" :icon="['fal','link']"/>
+            <font-awesome-icon class="icon" :icon="['fas','link']"/>
         </div>
         <div class="chain_info card">
             <table class="card_body">

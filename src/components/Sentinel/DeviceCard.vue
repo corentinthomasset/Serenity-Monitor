@@ -52,7 +52,7 @@ export default {
                 case 'blocked':
                     return ['fas','ban'];
             }
-            return ['fas','shield-check'];
+            return ['fas','check-circle'];
         }
     },
     methods: {

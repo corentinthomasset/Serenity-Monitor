@@ -16,7 +16,7 @@
             <table class="rules_table drop" v-if="fingerprints.dropped.length > 0">
                 <tr><th colspan="6">DROP</th></tr>
                 <tr v-for="fingerprint in fingerprints.dropped" :key="`${fingerprint.device_ip}-${fingerprint.hash}`">
-                    <td><font-awesome-icon :icon="['fas', 'times-hexagon']"/></td>
+                    <td><font-awesome-icon :icon="['fas', 'times']"/></td>
                     <td><div class="legend">Protocol</div>{{getProtocolName(fingerprint.protocol)}}</td>
                     <td><div class="legend">Ip</div>{{fingerprint.endpoint_ip}}</td>
                     <td v-if="fingerprint.port"><div class="legend">Port</div>{{fingerprint.port}}</td>

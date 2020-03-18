@@ -24,7 +24,7 @@
                 </span>
             </li>
         </ul>
-        <Empty v-else desc="No device connected" icon="lightbulb-slash"/>
+        <Empty v-else desc="No device connected" icon="question"/>
     </div>
 </template>
 

@@ -24,7 +24,7 @@ body{
 
 .view > * {
   padding: 15px;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 100vh;
   box-sizing: border-box;
 }
@@ -85,6 +85,8 @@ h2 {
   background: none;
   border: none;
   padding: 5px 0;
+  width: 100px;
+
 }
 
 .search_bar input:focus{

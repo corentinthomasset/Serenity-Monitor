@@ -6,19 +6,15 @@ import socket from './socket';
 import VueApexCharts from 'vue-apexcharts'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faWifi, faFingerprint, faLightbulbSlash, faWifiSlash, faSearch, faTimes,faLink, faArrowLeft,
-    faSpiderWeb
-} from '@fortawesome/pro-light-svg-icons';
-import {
-  faCog, faBiohazard, faCheckCircle, faTimesHexagon, faSortAlphaUp, faSortAlphaDown, faChevronDown,
-  faServer, faQuestion, faChessRookAlt, faShieldCheck, faBan
-
-} from "@fortawesome/pro-solid-svg-icons";
+  faWifi, faFingerprint, faSearch, faTimes,faLink, faArrowLeft,
+    faCog, faBiohazard, faCheckCircle, faSortAlphaUp, faSortAlphaDown, faChevronDown,
+  faServer, faQuestion, faBan
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faWifi, faChessRookAlt, faCog, faFingerprint, faShieldCheck, faBiohazard, faBan,
-    faLightbulbSlash, faCheckCircle, faTimesHexagon, faSortAlphaUp, faSortAlphaDown, faSearch,
-    faTimes, faServer, faQuestion, faWifiSlash, faLink, faChevronDown,faSpiderWeb, faArrowLeft
+library.add(faWifi, faCog, faFingerprint, faBiohazard, faBan,
+     faCheckCircle, faSortAlphaUp, faSortAlphaDown, faSearch,
+    faTimes, faServer, faQuestion, faLink, faChevronDown, faArrowLeft
 );
 
 Vue.component('apexchart', VueApexCharts);

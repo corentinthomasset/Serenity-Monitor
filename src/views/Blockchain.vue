@@ -1,7 +1,7 @@
 <template>
     <div id="blockchain" class="view">
         <div>
-            <router-link to="/" class="back"><font-awesome-icon :icon="['fal', 'arrow-left']"/></router-link>
+            <router-link to="/" class="back"><font-awesome-icon :icon="['fas', 'arrow-left']"/></router-link>
             <BlockchainHeader  :chainId="chainId"/>
             <Sentinels :chainId="chainId" :blocks="blocks"/>
         </div>

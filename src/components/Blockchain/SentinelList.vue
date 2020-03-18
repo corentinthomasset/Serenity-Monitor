@@ -10,8 +10,8 @@
                 <li class="search_bar">
                     <input id="search_bar_input" type="text" v-model="search"/>
                     <label for="search_bar_input">
-                        <font-awesome-icon :icon="['fal', 'search']" v-if="!search.length"/>
-                        <font-awesome-icon :icon="['fal', 'times']" @click="search = ''" v-else/>
+                        <font-awesome-icon :icon="['fas', 'search']" v-if="!search.length"/>
+                        <font-awesome-icon :icon="['fas', 'times']" @click="search = ''" v-else/>
                     </label>
                 </li>
             </ul>

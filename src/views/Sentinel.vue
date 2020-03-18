@@ -1,7 +1,7 @@
 <template>
     <div id="sentinel" class="view" :key="address">
         <div>
-            <router-link to="/" class="back"><font-awesome-icon :icon="['fal', 'arrow-left']"/></router-link>
+            <router-link to="/" class="back"><font-awesome-icon :icon="['fas', 'arrow-left']"/></router-link>
             <SentinelHeader :sentinel="sentinel"/>
             <h1>Blockchains</h1>
             <ChainList :sentinel="sentinel"/>

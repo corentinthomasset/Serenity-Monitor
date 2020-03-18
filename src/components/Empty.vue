@@ -1,6 +1,6 @@
 <template>
     <div class="empty_set">
-        <font-awesome-icon class="icon" :icon="['fal',icon]" size="3x"/>
+        <font-awesome-icon class="icon" :icon="['fas',icon]" size="3x"/>
         <h2>{{desc}}</h2>
     </div>
 </template>
@@ -22,6 +22,8 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .empty_set h2{

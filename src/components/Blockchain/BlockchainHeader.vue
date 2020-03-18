@@ -2,7 +2,7 @@
     <div id="blockchain_header">
         <div class="chain_id">
             <div class="chain_icon">
-                <font-awesome-icon class="icon" :icon="['fal','link']"/>
+                <font-awesome-icon class="icon" :icon="['fas','link']"/>
             </div>
             <h3 v-if="chainId !== 'serenity_control_chain'">
                 <Hash :hash="chainId"/> ({{stripName(chains[chainId])}})
@@ -19,7 +19,7 @@
                         :style="`animation-delay: .${index}s`"
                         @click.native="toggleMenu()">
                     <div class="chain_icon">
-                        <font-awesome-icon class="icon" :icon="['fal','link']"/>
+                        <font-awesome-icon class="icon" :icon="['fas','link']"/>
                     </div>
                     <span v-if="chain !== 'serenity_control_chain'">
                         <Hash :hash="chain"/> <span>({{devices}})</span>
