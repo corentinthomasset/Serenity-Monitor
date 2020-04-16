@@ -3,9 +3,7 @@
         <div>
             <router-link to="/" class="back"><font-awesome-icon :icon="['fas', 'arrow-left']"/></router-link>
             <SentinelHeader :sentinel="sentinel"/>
-            <h1>Blockchains</h1>
-            <ChainList :sentinel="sentinel"/>
-            <h1>Network</h1>
+            <h1>Neighbors</h1>
             <SentinelList :sentinel="sentinel"/>
         </div>
         <div>
@@ -23,7 +21,6 @@
 <script>
 import SentinelHeader from "../components/Sentinel/SentinelHeader";
 import Sentinel from "../store/Models/Sentinel";
-import ChainList from "../components/Sentinel/ChainList";
 import DarkPool from "../components/Sentinel/DarkPool";
 import SentinelList from "../components/Sentinel/SentinelList";
 import FilterActivity from "../components/Sentinel/FilterActivity";
@@ -31,7 +28,7 @@ import DevicesList from "../components/Sentinel/DevicesList";
 import FilterRules from "../components/Sentinel/FilterRules";
 export default {
     name: "Sentinel",
-    components: {FilterRules, DevicesList, FilterActivity, SentinelList, DarkPool, ChainList, SentinelHeader},
+    components: {FilterRules, DevicesList, FilterActivity, SentinelList, DarkPool, SentinelHeader},
     props: ['address'],
     computed: {
         sentinel(){

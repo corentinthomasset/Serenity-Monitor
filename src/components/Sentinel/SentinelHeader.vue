@@ -21,7 +21,6 @@
                 </tr>
             </table>
         </div>
-        <h5 class="last_block_mined" v-if="lastBlockMined">Last block mined: <Hash :hash="lastBlockMined.block_hash"/> on {{new Date(lastBlockMined.timestamp).toLocaleString()}}</h5>
     </div>
 </template>
 
