@@ -25,7 +25,7 @@ import Hash from "../Hash";
 import NetworkLink from "../../store/Models/NetworkLink";
 import NodeIcon from "../NodeIcon";
 export default {
-    name: 'SentineCard',
+    name: 'SentinelCard',
     props: ['sentinel'],
     components: {
         NodeIcon,

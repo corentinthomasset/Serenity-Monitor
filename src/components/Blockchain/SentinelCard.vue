@@ -24,7 +24,7 @@ import NodeIcon from "../NodeIcon";
 import CurrentBlock from "../../store/Models/CurrentBlock";
 
 export default {
-    name: 'SentineCard',
+    name: 'SentinelCard',
     props: ['sentinel', 'chainId'],
     components: {
         NodeIcon,

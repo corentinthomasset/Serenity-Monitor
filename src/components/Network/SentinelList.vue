@@ -14,7 +14,7 @@
             </ul>
         </div>
         <ul v-if="sentinels.length > 0" class="list">
-            <SentineCard v-for="(sentinel, index) in sentinels" :key="sentinel.address" :sentinel="sentinel" :style="`animation-delay: ${index/15}s`"/>
+            <SentinelCard v-for="(sentinel, index) in sentinels" :key="sentinel.address" :sentinel="sentinel" :style="`animation-delay: ${index/15}s`"/>
         </ul>
         <Empty v-else desc="No sentinel connected" icon="question"/>
     </div>
@@ -22,12 +22,12 @@
 
 <script>
 import Sentinel from "../../store/Models/Sentinel";
-import SentineCard from "./SentinelCard";
+import SentinelCard from "./SentinelCard";
 import Empty from "../Empty";
 
 export default {
     name: "SentinelList",
-    components: {Empty, SentineCard},
+    components: {Empty, SentinelCard},
     data(){
         return({
             sort: ['address', 'ip'],

@@ -6,14 +6,9 @@
             <h1>Neighbors</h1>
             <SentinelList :sentinel="sentinel"/>
         </div>
+        <SentinelGraph :sentinel="sentinel"/>
         <div>
-            <h1>Packet filter</h1>
-            <FilterActivity :sentinel="sentinel"/>
-            <DevicesList :sentinel="sentinel"/>
-            <FilterRules :sentinel="sentinel"/>
-        </div>
-        <div>
-            <DarkPool :sentinel="sentinel"/>
+            <BlockList :sentinel="sentinel"/>
         </div>
     </div>
 </template>
@@ -21,14 +16,12 @@
 <script>
 import SentinelHeader from "../components/Sentinel/SentinelHeader";
 import Sentinel from "../store/Models/Sentinel";
-import DarkPool from "../components/Sentinel/DarkPool";
+import BlockList from "../components/Sentinel/BlockList";
 import SentinelList from "../components/Sentinel/SentinelList";
-import FilterActivity from "../components/Sentinel/FilterActivity";
-import DevicesList from "../components/Sentinel/DevicesList";
-import FilterRules from "../components/Sentinel/FilterRules";
+import SentinelGraph from "../components/Sentinel/SentinelGraph";
 export default {
     name: "Sentinel",
-    components: {FilterRules, DevicesList, FilterActivity, SentinelList, DarkPool, SentinelHeader},
+    components: {SentinelList, BlockList, SentinelHeader, SentinelGraph},
     props: ['address'],
     computed: {
         sentinel(){

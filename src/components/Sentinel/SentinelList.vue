@@ -47,8 +47,6 @@ export default {
                 let address = netLink.source !== this.sentinel.address ? netLink.source : netLink.target;
                 neighbors.push(Sentinel.query().where('address', address).with('devices').get()[0]);
             });
-
-
             neighbors.sort((a,b) => 
                            (a[this.sort[this.sortIndex % 2]] > b[this.sort[this.sortIndex % 2]]) ? 1 
                            : ((b[this.sort[this.sortIndex % 2]] > a[this.sort[this.sortIndex % 2]]) ? -1 
