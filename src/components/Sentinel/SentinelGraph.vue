@@ -187,7 +187,9 @@ export default {
       .attr("x", width / 2)
       .attr("y", height / 2 - radius * 3.5 - 5)
       .attr("text-anchor", "middle")
-      .attr("style", "font-size:12px;");
+      .attr("font-weight", "bold")
+      .attr("style", "font-size:12px;")
+      .style("fill", "#a62df8");
 
 
     var medGradient = svg.append("defs")
@@ -216,7 +218,9 @@ export default {
       .attr("x", width / 2)
       .attr("y", height / 2 - radius * 2.5 - 5)
       .attr("text-anchor", "middle")
-      .attr("style", "font-size:12px;");
+      .attr("font-weight", "bold")
+      .attr("style", "font-size:12px;")
+      .style("fill", "#a62df8");
 
 
     var smallGradient = svg.append("defs")
@@ -245,7 +249,10 @@ export default {
       .attr("x", width / 2)
       .attr("y", height / 2 - radius * 1.5 - 5)
       .attr("text-anchor", "middle")
-      .attr("style", "font-size:12px;");    
+      .attr("style", "font-size:12px;")
+      .attr("font-weight", "bold")
+      .style("fill", "#a62df8");
+
     // Create a simulation with basic forces and connect nodes with links
     const simulation = d3
       .forceSimulation(nodes)
