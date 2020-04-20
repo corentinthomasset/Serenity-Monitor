@@ -1,8 +1,8 @@
 <template>
   <div id="sentinel_graph">
-      <div :style="iconTransform">
-          <NodeIcon  v-bind:hash="sentinel.address" />
-      </div>
+    <div :style="iconTransform">
+      <NodeIcon v-bind:hash="sentinel.address" />
+    </div>
   </div>
 </template>
 
@@ -33,8 +33,14 @@ export default {
     devices() {
       return this.sentinel.devices;
     },
-    iconTransform(){
-        return "transform: translate("+ (this.width/2  - 20) + "px, "+ (this.height/2+20) + "px);"
+    iconTransform() {
+      return (
+        "transform: translate(" +
+        (this.width / 2 - 20) +
+        "px, " +
+        (this.height / 2 + 20) +
+        "px);"
+      );
     },
     nodes() {
       let nodes = [];
@@ -110,8 +116,7 @@ export default {
         });
       });
       return links;
-    },
-    
+    }
   },
   methods: {
     shortAddress(address) {
@@ -150,7 +155,7 @@ export default {
     let height = document.getElementById("sentinel_graph").clientHeight;
 
     this.height = height;
-    this.width= width;
+    this.width = width;
 
     const svg = d3
       .selectAll("#sentinel_graph")
@@ -158,6 +163,10 @@ export default {
       .attr("width", width)
       .attr("height", height)
       .append("g");
+
+    var tip = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
 
     let radius = 0.1 * Math.min(width, height);
 
@@ -329,6 +338,19 @@ export default {
             return "black";
         }
       })
+      .on("mouseover", (d) => {		
+            tip.transition()		
+                .duration(200)		
+                .style("opacity", .9);		
+            tip	.html("Hello" + d.name)	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+            })					
+        .on("mouseout", () => {		
+            tip.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        })
       .call(this.drag(simulation));
 
     const labels = node
@@ -358,5 +380,17 @@ export default {
 .circle {                         
     fill:  linear-gradient(#7100ff0f, #fff);                 
     stroke-width: 0px;          
+}
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 60px;					
+    height: 28px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
 }
 </style>
