@@ -157,39 +157,8 @@ export default {
       .append("g");
 
     let radius = 0.1 * Math.min(width, height);
-    svg
-      .append("circle")
-      .attr("r", radius * 1.5)
-      .attr("fill", "#0000")
-      .attr("stroke", "purple")
-      .attr("cx", width / 2)
-      .attr("cy", height / 2);
 
-    svg
-      .append("text")
-      .text("Protected devices")
-      .attr("x", width / 2)
-      .attr("y", height / 2 - radius * 1.5 - 5)
-      .attr("text-anchor", "middle")
-      .attr("style", "font-size:12px;");
-
-    svg
-      .append("circle")
-      .attr("r", radius * 2.5)
-      .attr("fill", "#0000")
-      .attr("stroke", "purple")
-      .attr("cx", width / 2)
-      .attr("cy", height / 2);
-
-    svg
-      .append("text")
-      .text("Neighbors")
-      .attr("x", width / 2)
-      .attr("y", height / 2 - radius * 2.5 - 5)
-      .attr("text-anchor", "middle")
-      .attr("style", "font-size:12px;");
-
-    svg
+    svg //big circle
       .append("circle")
       .attr("r", radius * 3.5)
       .attr("fill", "#0000")
@@ -205,6 +174,37 @@ export default {
       .attr("text-anchor", "middle")
       .attr("style", "font-size:12px;");
 
+    svg //medium circle
+      .append("circle")
+      .attr("r", radius * 2.5)
+      .attr("fill","#FDF6E3")
+      .attr("stroke", "purple")
+      .attr("cx", width / 2)
+      .attr("cy", height / 2);
+
+    svg
+      .append("text")
+      .text("Neighbors")
+      .attr("x", width / 2)
+      .attr("y", height / 2 - radius * 2.5 - 5)
+      .attr("text-anchor", "middle")
+      .attr("style", "font-size:12px;");
+
+    svg //small circle
+      .append("circle")
+      .attr("r", radius * 1.5)
+      .attr("fill", "url(#radial-gradient)")
+      .attr("stroke", "#a62df8")
+      .attr("cx", width / 2)
+      .attr("cy", height / 2);
+
+    svg
+      .append("text")
+      .text("Protected devices")
+      .attr("x", width / 2)
+      .attr("y", height / 2 - radius * 1.5 - 5)
+      .attr("text-anchor", "middle")
+      .attr("style", "font-size:12px;");    
     // Create a simulation with basic forces and connect nodes with links
     const simulation = d3
       .forceSimulation(nodes)
@@ -307,4 +307,8 @@ export default {
 };
 </script>
 <style>
+.circle {                         
+    fill:  linear-gradient(#7100ff0f, #fff);                 
+    stroke-width: 0px;          
+}
 </style>
