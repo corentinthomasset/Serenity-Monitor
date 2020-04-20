@@ -5,8 +5,8 @@
       </div>
       <div class="network_info">
         <ul>
-            <li>Sentinels: {{nodes.length}}</li>
-            <li>Links: {{links.length}}</li>
+            <li>Neighbors: {{n_neighbors}}</li>
+            <li>N+1: {{n_sec_neighbors}}</li>
         </ul>
     </div>
   </div>
@@ -47,6 +47,20 @@ export default {
         (this.height / 2 - 20) +
         "px);"
       );
+    },
+    n_neighbors() {
+      let count = 0;
+      this.nodes.forEach(node => {
+        if(node.type === 2) { count+=1 }
+      })
+      return count;
+    },
+    n_sec_neighbors() {
+      let count = 0;
+      this.nodes.forEach(node => {
+        if(node.type === 3) { count+=1 }
+      })
+      return count;
     },
     nodes() {
       let nodes = [];
@@ -393,8 +407,8 @@ div.tooltip {
 }
 
 .network_info {
-    width: 50%;
-    top: 50px;
+    width: 53.5%;
+    top: 30px;
     display: flex;
     justify-content: center;
     align-content: stretch;
