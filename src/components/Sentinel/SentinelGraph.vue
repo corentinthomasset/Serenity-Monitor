@@ -315,27 +315,18 @@ export default {
     const balls = node
       .append("circle")
       .attr("r", d => (d.type == 0 ? 10 : 5))
-      .attr("fill", d => {
-        switch (d.type) {
-          case 0: // main
-            return "red";
-          case 1: // device
-            return "blue";
-          case 2: // first
-            return "pink";
-          case 3: // second
-            return "green";
-          default:
-            return "black";
-        }
-      })
+      .attr("fill", "#32325d")
+      .attr("cursor", "pointer")
+      .attr("stroke-width", "0px")
       .call(this.drag(simulation));
 
     const labels = node
       .append("text")
       .text(d => (d.type === 0 ? "" : d.name))
       .attr("style", "font-size:12px;")
-      .attr("stroke", "black")
+      .attr("font-family", "Source Sans Pro")
+      .style('fill', '#101010')
+      .style('stroke', 'none')
       .attr("x", 10)
       .attr("y", 5);
 
@@ -359,4 +350,5 @@ export default {
     fill:  linear-gradient(#7100ff0f, #fff);                 
     stroke-width: 0px;          
 }
+
 </style>
