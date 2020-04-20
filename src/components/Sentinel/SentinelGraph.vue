@@ -3,6 +3,12 @@
       <div :style="iconTransform">
           <NodeIcon  v-bind:hash="sentinel.address" />
       </div>
+      <div class="network_info">
+        <ul>
+            <li>Sentinels: {{nodes.length}}</li>
+            <li>Links: {{links.length}}</li>
+        </ul>
+    </div>
   </div>
 </template>
 
@@ -349,6 +355,36 @@ export default {
 .circle {                         
     fill:  linear-gradient(#7100ff0f, #fff);                 
     stroke-width: 0px;          
+}
+
+#sentinel_graph{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-content: stretch;
+    align-items: stretch;
+    position: relative;
+}
+
+.network_info{
+    position: absolute;
+    top: 50px;
+}
+
+.network_info ul {
+    background: rgba(0,0,0,.8);
+    list-style: none;
+    border-radius: 15px;
+    color: #fff;
+    padding: 5px 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.network_info ul li{
+    margin:  0 5px;
+    font-size: .9em;
 }
 
 </style>

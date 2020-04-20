@@ -21,7 +21,7 @@ import SentinelList from "../components/Sentinel/SentinelList";
 import SentinelGraph from "../components/Sentinel/SentinelGraph";
 export default {
     name: "Sentinel",
-    components: {SentinelList, BlockList, SentinelHeader, SentinelGraph},
+    components: {SentinelHeader, SentinelList, BlockList, SentinelGraph},
     props: ['address'],
     computed: {
         sentinel(){
