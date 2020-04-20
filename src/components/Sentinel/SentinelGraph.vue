@@ -92,7 +92,6 @@ export default {
             });
         });
       });
-      console.log(nodes);
       return nodes;
     },
     links() {
@@ -110,7 +109,6 @@ export default {
           if (exists) links.push({ target: netLink.target, source: address });
         });
       });
-      console.log(links);
       return links;
     },
     
@@ -163,11 +161,23 @@ export default {
 
     let radius = 0.1 * Math.min(width, height);
 
+    var bigGradient = svg.append("defs")
+    .append("radialGradient")
+    .attr("id", "big-rad-grad");
+
+    bigGradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "#fff");
+
+    bigGradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#f7f7fe");
+
     svg //big circle
       .append("circle")
       .attr("r", radius * 3.5)
-      .attr("fill", "#0000")
-      .attr("stroke", "purple")
+      .attr("fill", "url(#big-rad-grad)")
+      .attr("stroke", "#a62df814")
       .attr("cx", width / 2)
       .attr("cy", height / 2);
 
@@ -179,11 +189,24 @@ export default {
       .attr("text-anchor", "middle")
       .attr("style", "font-size:12px;");
 
+
+    var medGradient = svg.append("defs")
+    .append("radialGradient")
+    .attr("id", "med-rad-grad");
+
+    medGradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "#fff");
+
+    medGradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#f6f4fe");
+
     svg //medium circle
       .append("circle")
       .attr("r", radius * 2.5)
-      .attr("fill","#FDF6E3")
-      .attr("stroke", "purple")
+      .attr("fill", "url(#med-rad-grad)")
+      .attr("stroke", "#a62df840")
       .attr("cx", width / 2)
       .attr("cy", height / 2);
 
@@ -195,10 +218,23 @@ export default {
       .attr("text-anchor", "middle")
       .attr("style", "font-size:12px;");
 
+
+    var smallGradient = svg.append("defs")
+    .append("radialGradient")
+    .attr("id", "sml-rad-grad");
+
+    smallGradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "#fff");
+
+    smallGradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#f1e7fd");
+
     svg //small circle
       .append("circle")
       .attr("r", radius * 1.5)
-      .attr("fill", "url(#radial-gradient)")
+      .attr("fill", "url(#sml-rad-grad)")
       .attr("stroke", "#a62df8")
       .attr("cx", width / 2)
       .attr("cy", height / 2);
