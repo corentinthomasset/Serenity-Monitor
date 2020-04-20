@@ -26,41 +26,48 @@ export default {
         }
   },
   computed:{
-    nodes() {
-        let nodes = [];
-        this.nodes_addresses.forEach(address => nodes.push({id: address, name:this.shortAddress(address)}));
-        this.devices.forEach(device => nodes.push({id: device.$id, name: device.name}))
-        return nodes
-    },
     devices(){
         return this.sentinel.devices;
     },
-    nodes_addresses(){
-        let nodes_addresses = []
+    nodes(){
+        let nodes = []
+        nodes.push({id: this.sentinel.address, name: this.shortAddress(this.sentinel.address), type: 0})
+
+        this.devices.forEach(device => nodes.push({id: device.$id, name: device.name, type: 1}))
+
         let firstNeighborsLinks = NetworkLink.query().where('source', this.sentinel.address).orWhere('target', this.sentinel.address).get();
         firstNeighborsLinks.forEach(netLink => {
-            if (nodes_addresses.indexOf(netLink.source) === -1) nodes_addresses.push(netLink.source);
-            if (nodes_addresses.indexOf(netLink.target) === -1) nodes_addresses.push(netLink.target);
+            let exists = nodes.some(node => node.id === netLink.source);
+            if (!exists) nodes.push({id: netLink.source, name: this.shortAddress(netLink.source), type: 2});
+            exists = nodes.some(node => node.id === netLink.target);
+            if (!exists) nodes.push({id: netLink.target, name: this.shortAddress(netLink.target), type: 2});
         });
 
-        nodes_addresses.forEach(address => {
+        nodes.forEach(node => {
+            let address = node.id
             let secNeighbors = NetworkLink.query().where('source', address).orWhere('target', address).get();
             secNeighbors.forEach(netLink => {
-                if (nodes_addresses.indexOf(netLink.source) === -1) nodes_addresses.push(netLink.source);
-                if (nodes_addresses.indexOf(netLink.target) === -1) nodes_addresses.push(netLink.target);
+                let exists = nodes.some(node => node.id === netLink.source);
+                if (!exists) nodes.push({id: netLink.source, name: this.shortAddress(netLink.source), type: 3});
+                exists = nodes.some(node => node.id === netLink.target);
+                if (!exists) nodes.push({id: netLink.target, name: this.shortAddress(netLink.target), type: 3});
             });
         });
-        return nodes_addresses
+        console.log(nodes)
+        return nodes
     },
     links() {
         let links = [];
         this.devices.forEach(device => links.push({tid: device.$id, sid: this.sentinel.address}))
-        this.nodes_addresses.forEach(address => {
-            let netLinks = NetworkLink.query().where('source',address).get();
+        this.nodes.forEach(node => {
+            let address = node.id
+            let netLinks = NetworkLink.query().where('source', address).get();
             netLinks.forEach(netLink => {
-                if(this.nodes_addresses.indexOf(netLink.target) >= 0) links.push({tid: netLink.target, sid: address});
+                let exists = this.nodes.some(node => node.id === netLink.target);
+                if(exists) links.push({tid: netLink.target, sid: address});
             })
         });
+        console.log(links)
       return links;
     }
   },
