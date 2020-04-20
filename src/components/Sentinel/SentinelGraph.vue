@@ -1,7 +1,7 @@
 <template>
   <div id="sentinel_graph">
-      <div :style="iconTransform">
-          <NodeIcon v-bind:hash="sentinel.address" />
+    <div :style="iconTransform" style="position:absolute;overflow-y: hidden;">
+      <NodeIcon v-bind:hash="sentinel.address" />
       </div>
       <div class="network_info">
         <ul>
@@ -44,7 +44,7 @@ export default {
         "transform: translate(" +
         (this.width / 2 - 20) +
         "px, " +
-        (this.height / 2 + 20) +
+        (this.height / 2 - 20) +
         "px);"
       );
     },
@@ -417,4 +417,7 @@ div.tooltip {
     font-size: .9em;
 }
 
+#sentinel_graph {
+    padding: 0;
+}
 </style>
