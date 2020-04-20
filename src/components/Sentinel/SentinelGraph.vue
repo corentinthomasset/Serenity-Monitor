@@ -1,6 +1,8 @@
 <template>
   <div id="sentinel_graph">
-    <NodeIcon :style="iconStyle" v-bind:hash="sentinel.address" />
+      <div :style="iconTransform">
+          <NodeIcon  v-bind:hash="sentinel.address" />
+      </div>
   </div>
 </template>
 
@@ -23,12 +25,16 @@ export default {
         nodeSize: 8,
         force: 1500
       },
-      iconStyle: "translate(10px,10px);"
+      width: 100,
+      height: 100
     };
   },
   computed: {
     devices() {
       return this.sentinel.devices;
+    },
+    iconTransform(){
+        return "transform: translate("+ (this.width/2  - 20) + "px, "+ (this.height/2+20) + "px);"
     },
     nodes() {
       let nodes = [];
@@ -147,7 +153,6 @@ export default {
 
     this.height = height;
     this.width= width;
-    this.iconStyle = "translate(" + this.width / 2 + "px, " + this.height / 2 + "px);";
 
     const svg = d3
       .selectAll("#sentinel_graph")
