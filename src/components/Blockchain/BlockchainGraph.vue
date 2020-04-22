@@ -138,7 +138,7 @@
     #blockchain_graph {
         position: relative;
         overflow-y: scroll;
-        height: calc(100% - (135px));
+        height: calc(100vh - (165px));
         box-sizing: border-box;
         margin-top: 15px;
     }

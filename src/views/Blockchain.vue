@@ -5,11 +5,14 @@
             <BlockchainHeader  :chainId="chainId"/>
             <Sentinels :chainId="chainId" :blocks="blocks"/>
         </div>
-        <div v-if="false">
-            <Consensus :chainId="chainId"/>
-            <BlockchainGraph :chainId="chainId" :blocks="blocks"/>
+        <div>
+            <div @click="showNetwork = !showNetwork" class="network_switch">{{toggleText}} <font-awesome-icon class="icon" :icon="['fas', toggleIcon]"/></div>
+            <div v-if="!showNetwork">
+                <Consensus :chainId="chainId"/>
+                <BlockchainGraph :chainId="chainId" :blocks="blocks"/>
+            </div>
+            <NetworkGraph :chainId="chainId" v-else/>
         </div>
-        <NetworkGraph :chainId="chainId" v-else/>
         <div>
             <div v-if="chainId !== 'serenity_control_chain'">
                 <WhitePool :chainId="chainId"/>
@@ -37,12 +40,23 @@ export default {
         NetworkGraph,
         BlockchainHeader, Sentinels, DarkPool, ConfirmedBlockPool, BlockchainGraph, Consensus, WhitePool},
     props: ['id'],
+    data(){
+        return {
+            showNetwork: false
+        }
+    },
     computed: {
         chainId(){
             return this.id || 'serenity_control_chain';
         },
         blocks(){
             return Block.query().where('chain_id', this.chainId).with('hxs').get();
+        },
+        toggleIcon(){
+            return this.showNetwork ? 'toggle-on' : 'toggle-off';
+        },
+        toggleText(){
+            return this.showNetwork ? 'Hide network graph' : 'Show network graph';
         }
     }
 }
@@ -79,5 +93,24 @@ export default {
     background: linear-gradient(45deg, #7100ff, #c027ff);
     color: #fff;
     box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+
+.network_switch{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    cursor: pointer;
+    position: fixed;
+    z-index: 10;
+    right: 365px;
+    box-sizing: border-box;
+    padding: 5px 20px;
+    background: #f9fafe;
+    color: #adb5bd;
+}
+
+.network_switch .icon{
+    font-size: 1.3em;
+    margin: 5px;
 }
 </style>

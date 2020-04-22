@@ -255,7 +255,7 @@ export default {
 <style>
 #network_graph {
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - (40px));
     display: flex;
     justify-content: center;
     align-content: stretch;
