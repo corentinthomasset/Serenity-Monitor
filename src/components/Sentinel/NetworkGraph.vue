@@ -425,6 +425,8 @@ export default {
                     let newLinks = links//.map(d => Object.assign({}, d));
                     let newNodes = nodes//.map(d => Object.assign(old.get(d.address) || {}, d));
 
+                    vue.simulate(simulation, newNodes, newLinks, () => vue.ticked(link, node));
+
                     link = link
                         .data(newLinks, d => [d.source, d.target])
                         .join(enter=>enter.insert("line"))
@@ -456,8 +458,6 @@ export default {
 
                             return n;
                         });
-
-                    vue.simulate(simulation, newNodes, newLinks, () => vue.ticked(link, node));
                 }
             });
 
