@@ -6,7 +6,7 @@
             <h1>Neighbors</h1>
             <SentinelList :sentinel="sentinel"/>
         </div>
-        <SentinelGraph :sentinel="sentinel"/>
+        <NetworkGraph :sentinel="sentinel"/>
         <div>
             <BlockList :sentinel="sentinel"/>
         </div>
@@ -18,10 +18,10 @@ import SentinelHeader from "../components/Sentinel/SentinelHeader";
 import Sentinel from "../store/Models/Sentinel";
 import BlockList from "../components/Sentinel/BlockList";
 import SentinelList from "../components/Sentinel/SentinelList";
-import SentinelGraph from "../components/Sentinel/SentinelGraph";
+import NetworkGraph from "../components/Sentinel/NetworkGraph";
 export default {
     name: "Sentinel",
-    components: {SentinelHeader, SentinelList, BlockList, SentinelGraph},
+    components: {SentinelHeader, SentinelList, BlockList, NetworkGraph},
     props: ['address'],
     computed: {
         sentinel(){
