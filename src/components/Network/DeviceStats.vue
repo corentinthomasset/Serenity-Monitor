@@ -1,6 +1,6 @@
 <template>
     <div id="device_stats">
-        <h2>Most popular devices</h2>
+        <h2>Most popular device chains</h2>
         <ul id="device_chart" v-if="devices.length">
             <li v-for="(stat, chainId) in stats" :key="chainId">
                 <div class="label" v-if="chainId !== 'unidentified'">
@@ -117,6 +117,7 @@ export default {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    list-style: none;
 }
 
 #device_chart .device_chain ul li{
