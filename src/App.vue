@@ -11,6 +11,8 @@ body{
   color: #32325d;
   background: #f9fafe;
   margin: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
 #app{
@@ -166,6 +168,28 @@ h2 {
   position: absolute;
   top: 10px;
   left: 10px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+  cursor: pointer;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,.05);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.1);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
 }
 
 @keyframes slide {

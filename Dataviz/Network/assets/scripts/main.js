@@ -1,6 +1,9 @@
 let svg = d3.select("body")
     .append("svg")
-    .append("g");
+    .append("g")
+    .call(d3.zoom().on("zoom", function () {
+        svg.attr("transform", d3.event.transform)
+    }));
 
 let width = document.body.getBoundingClientRect().width;
 let height = document.body.getBoundingClientRect().height;
@@ -58,6 +61,10 @@ function dragstarted(d) {
 function dragged(d) {
     d.fx = d3.event.x;
     d.fy = d3.event.y;
+
+    div.html("Tooltip")
+        .style("left", (d3.event.x + 20) + "px")
+        .style("top", (d3.event.y - 28) + "px");
 }
 
 function dragended(d) {
@@ -66,18 +73,45 @@ function dragended(d) {
     d.fy = null;
 }
 
+function nodeFocus(d) {
+    d3.select(d3.event.target).style('fill', '#000');
+    link.style('stroke', function (link_d) {
+        return link_d.source.address === d.address || link_d.target.address === d.address ? '#000' : '#aaa';
+    }).style('stroke-width', function (link_d) {
+        return link_d.source.address === d.address || link_d.target.address === d.address ? 2 : 1;
+    });
+
+    div.transition()
+        .duration(200)
+        .style("opacity", .9);
+
+    div.html("Tooltip")
+        .style("left", (d3.event.x + 20) + "px")
+        .style("top", (d3.event.y - 28) + "px");
+}
+
+function nodeBlur(d) {
+    node.style('fill', "#69b3a2");
+    link.style('stroke', '#aaa')
+        .style('stroke-width', '1');
+
+    div.transition()
+        .duration(500)
+        .style("opacity", 0);
+}
+
 let chart = Object.assign(svg.node(), {
     update({nodes, links}) {
 
         // Make a shallow copy to protect against mutation, while
         // recycling old nodes to preserve position and velocity.
         const old = new Map(node.data().map(d => [d.address, d]));
-        nodes = nodes.map(d => Object.assign(old.get(d.address) || {}, d));
         links = links.map(d => Object.assign({}, d));
+        nodes = nodes.map(d => Object.assign(old.get(d.address) || {}, d));
 
         link = link
             .data(links, d => [d.source, d.target])
-            .join("line").style("stroke", "#aaa");
+            .join(enter=>enter.insert("line", ":first-child")).style("stroke", "#aaa");
 
         node = node
             .data(nodes, d => d.address)
@@ -88,31 +122,8 @@ let chart = Object.assign(svg.node(), {
                     .on("start", dragstarted)
                     .on("drag", dragged)
                     .on("end", dragended))
-                .on('mouseover', d => {
-                    d3.select(this).style('fill', '#000');
-                    link.style('stroke', function (link_d) {
-                        return link_d.source.address === d.address || link_d.target.address === d.address ? '#000' : '#aaa';
-                    }).style('stroke-width', function (link_d) {
-                        return link_d.source.address === d.address || link_d.target.address === d.address ? 2 : 1;
-                    });
-
-                    div.transition()
-                        .duration(200)
-                        .style("opacity", .9);
-
-                    div.html("Tooltip")
-                        .style("left", (d3.event.pageX) + "px")
-                        .style("top", (d3.event.pageY - 28) + "px");
-                })
-                .on('mouseout', d => {
-                    node.style('fill', "#69b3a2");
-                    link.style('stroke', '#aaa')
-                        .style('stroke-width', '1');
-
-                    div.transition()
-                        .duration(500)
-                        .style("opacity", 0);
-                }));
+                .on('mouseover', nodeFocus)
+                .on('mouseleave', nodeBlur));
 
         simulation.nodes(nodes).on("tick", ticked);
         simulation.force("link").links(links);

@@ -14,7 +14,7 @@
             </ul>
         </div>
         <ul v-if="sentinels.length > 0" class="list">
-            <SentinelCard v-for="(sentinel, index) in sentinels" :key="sentinel.address" :sentinel="sentinel" :style="`animation-delay: ${index/15}s`"/>
+            <SentinelCard v-for="(sentinel, index) in sentinels" :key="sentinel.address" :sentinel="sentinel" :style="`animation-delay: ${index/50}s`"/>
         </ul>
         <Empty v-else desc="No sentinel connected" icon="question"/>
     </div>
