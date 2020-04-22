@@ -7,9 +7,9 @@
             </ul>
         </div>
         <div class="controls">
-            <label @click="decreaseZoom" for="zoom_range">-</label>
-            <input class="slider" id="zoom_range" max="5" min="1" type="range" v-model="zoomLevel">
-            <label @click="increaseZoom" for="zoom_range">+</label>
+            <label for="zoom_range">-</label>
+            <input class="slider" id="zoom_range" type="range" v-model="zoomLevel">
+            <label for="zoom_range">+</label>
         </div>
         <Tooltip :address="selectedNode"/>
     </div>
@@ -26,7 +26,7 @@ export default {
     components: {Tooltip},
     data() {
         return {
-            zoomLevel: 3,
+            zoomLevel: 1,
             chart: null,
             selectedNode:  ''
         }
@@ -57,32 +57,6 @@ export default {
     methods: {
         shortAddress(address) {
             return address.slice(0, 3) + address.slice(-3);
-        },
-        zoom(level) {
-            switch (level) {
-                case '1':
-                    break;
-
-                case '2':
-                    break;
-
-                case '3':
-                    break;
-
-                case '4':
-                    break;
-
-                case '5':
-                    break;
-            }
-        },
-        decreaseZoom() {
-            this.zoomLevel -= this.zoomLevel > 1 ? 1 : 0;
-            this.zoomLevel += '';
-        },
-        increaseZoom() {
-            this.zoomLevel -= this.zoomLevel < 5 ? -1 : 0;
-            this.zoomLevel += '';
         },
         ticked(link, node) {
             link
@@ -142,36 +116,44 @@ export default {
             tip.transition()
                 .duration(500)
                 .style("opacity", 0);
+        },
+        slided(zoom, svg){
+            zoom.scaleTo(svg, d3.select("#zoom_range").property("value"));
+        },
+        zoomed() {
+            const currentTransform = d3.event.transform;
+            d3.select("#network_graph > svg > g > g").attr("transform", currentTransform);
+            d3.select("#zoom_range").property("value", currentTransform.k);
         }
-    },
+},
     watch: {
-        zoomLevel(level) {
-            this.zoom(level);
-        },
-        nodes(nodes) {
-            if (nodes.length <= 10) {
-                this.zoomLevel = '5';
-            } else if (nodes.length <= 20) {
-                this.zoomLevel = '4';
-            } else if (nodes.length <= 50) {
-                this.zoomLevel = '3';
-            } else if (nodes.length <= 250) {
-                this.zoomLevel = '2';
-            } else {
-                this.zoomLevel = '1';
-            }
-        },
         chartData(chartData) {
             this.chart.update(chartData);
         }
     },
     mounted() {
+
+            let zoom = d3.zoom()
+                .scaleExtent([0.01, 2])
+                .on("zoom", this.zoomed);
+
             let svg = d3.select("#network_graph")
                 .append("svg")
                 .append("g")
-                .call(d3.zoom().on("zoom",  ()=>{
-                    svg.attr("transform", d3.event.transform)
-                }));
+                .call(d3.zoom())
+                .call(zoom.transform, d3.zoomIdentity.scale(1));
+
+            let container = svg.append("g")
+                .attr("transform","scale(1)");
+
+            d3.select("#zoom_range")
+                .datum({})
+                .attr("value", zoom.scaleExtent()[0])
+                .attr("min", zoom.scaleExtent()[0])
+                .attr("max", zoom.scaleExtent()[1])
+                .attr("step", (zoom.scaleExtent()[1] - zoom.scaleExtent()[0]) / 100)
+                .on("input", ()=>{this.slided(zoom, svg)});
+
 
             let graph_width = document.getElementById('network_graph').getBoundingClientRect().width;
             let graph_height = document.getElementById('network_graph').getBoundingClientRect().height;
@@ -183,15 +165,15 @@ export default {
                 .force("charge", d3.forceManyBody().strength(-400))
                 .force("center", d3.forceCenter(graph_width / 2, graph_height / 2));
 
-            let link = svg.selectAll(".link");
+            let link = container.selectAll(".link");
 
-            let node = svg.selectAll(".node");
+            let node = container.selectAll(".node");
 
             let tip = d3.select("#network_graph .tooltip")
                 .style("opacity", 0);
 
             let vue = this;
-            this.chart = Object.assign(svg.node(), {
+            this.chart = Object.assign(container.node(), {
                 update({nodes, links}) {
 
                     const old = new Map(node.data().map(d => [d.address, d]));
@@ -321,8 +303,10 @@ export default {
 
 .controls label {
     font-size: 1.2em;
-    cursor: pointer;
+    pointer-events: none;
     margin: -2px 5px 0 5px;
+    opacity: .3;
+    font-weight: 500;
 }
 
 #zoom_range {
