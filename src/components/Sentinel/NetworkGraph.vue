@@ -1,18 +1,19 @@
 <template>
-    <div id="network_graph">
-        <div class="network_info">
-            <ul>
-                <li>Sentinels: {{nodes.length}}</li>
-                <li>Links: {{links.length}}</li>
-            </ul>
-        </div>
-        <div class="controls">
-            <label for="zoom_range">-</label>
-            <input class="slider" id="zoom_range" type="range" v-model="zoomLevel">
-            <label for="zoom_range">+</label>
-        </div>
-        <Tooltip :address="selectedNode"/>
+  <div id="network_graph">
+    <div class="network_info">
+      <ul>
+        <li>Sentinels: {{nodes.length}}</li>
+        <li>Links: {{links.length}}</li>
+      </ul>
     </div>
+    <div class="controls">
+      <label for="zoom_range">-</label>
+      <input class="slider" id="zoom_range" type="range" v-model="zoomLevel" />
+      <label for="zoom_range">+</label>
+    </div>
+    <Tooltip :address="selectedNode" />
+    <button @click="newSentinel">CLick</button>
+  </div>
 </template>
 
 <script>
@@ -20,6 +21,8 @@ import * as d3 from "d3";
 import NetworkLink from "../../store/Models/NetworkLink";
 import Tooltip from "../Tooltip";
 import Bus from '../../bus.js';
+import Sentinel from "../../store/Models/Sentinel";
+
 export default {
     name: 'NetworkGraph',
     props: ["sentinel"],
@@ -28,7 +31,9 @@ export default {
         return {
             zoomLevel: 1,
             chart: null,
-            selectedNode:  ''
+            selectedNode:  '',
+            width : 0,
+            height : 0
         }
     },
     computed: {
@@ -133,6 +138,18 @@ export default {
         }
     },
     methods: {
+        newSentinel() {
+            Sentinel.insert({
+                data: {
+                    address: 'azertyuiop',
+                    ip: '1.2.3.4'
+                }
+            });
+
+            NetworkLink.insert({
+                data: {id: '1', source: 'azertyuiop', target: this.sentinel.address}
+            });
+        },
         shortAddress(address) {
             return address.slice(0, 3) + address.slice(-3);
         },
@@ -319,6 +336,41 @@ export default {
                 .attr("style", "font-size:12px;")
                 .attr("font-weight", "bold")
                 .style("fill", "#a62df8");
+        },
+        simulate(simulation, nodes, links, tickFuntion) {
+            return simulation.on("tick", tickFuntion)
+                .nodes(nodes)
+                .force("link",d3.forceLink(links).id(d => d.address))
+                .force("charge", d3.forceManyBody())
+                .force("center", d3.forceCenter(this.width / 2, this.height / 2))
+                .force("CenterSelected", () => {
+                    // Custom Force function to keep the selected node at the center of the svg
+                    this.nodes.forEach(n => {
+                        const node_dist = Math.sqrt(
+                            Math.pow(n.x - this.width / 2, 2) + Math.pow(n.y - this.height / 2, 2)
+                        );
+                        const k = -0.01;
+                        const radius = 0.1 * Math.min(this.width, this.height);
+                        const radius_dist = n.type * radius;
+                        const diff = node_dist - radius_dist;
+                        switch (n.type) {
+                            case 0:
+                                n.fx = this.width / 2;
+                                n.fy = this.height / 2;
+                                break;
+                            default:
+                                n.vx += Math.min(
+                                    Math.max(k * (n.x - this.width / 2) * diff, -100),
+                                    100
+                                );
+                                n.vy += Math.min(
+                                    Math.max(k * (n.y - this.height / 2) * diff, -100),
+                                    100
+                                );
+                                break;
+                        }
+                    });
+                });
         }
 },
     watch: {
@@ -337,12 +389,18 @@ export default {
                 .call(d3.zoom())
                 .call(zoom.transform, d3.zoomIdentity.scale(1));
 
+            let nodesRef = this.nodes
+            let linksRef = this.links
+
+            let simulation = d3.forceSimulation()
+            this.simulate(simulation, nodesRef, linksRef )
+
             let container = svg.append("g")
                 .attr("transform","scale(1)");
 
-            let graph_width = document.getElementById('network_graph').getBoundingClientRect().width;
-            let graph_height = document.getElementById('network_graph').getBoundingClientRect().height;
-            this.drawCircles(container, graph_width, graph_height);
+            this.width = document.getElementById('network_graph').getBoundingClientRect().width;
+            this.height = document.getElementById('network_graph').getBoundingClientRect().height;
+            this.drawCircles(container, this.width, this.height);
 
             d3.select("#zoom_range")
                 .datum({})
@@ -351,44 +409,6 @@ export default {
                 .attr("max", zoom.scaleExtent()[1])
                 .attr("step", (zoom.scaleExtent()[1] - zoom.scaleExtent()[0]) / 100)
                 .on("input", ()=>{this.slided(zoom, svg)});
-
-
-            let radius = 0.1 * Math.min(graph_width, graph_height);
-            let simulation = d3
-                .forceSimulation(this.nodes)
-                .force(
-                    "link",
-                    d3.forceLink().id(d => d.address)
-                )
-                .force("charge", d3.forceManyBody())
-                .force("center", d3.forceCenter(graph_width / 2, graph_height / 2))
-                .force("CenterSelected", () => {
-                    // Custom Force function to keep the selected node at the center of the svg
-                    this.nodes.forEach(n => {
-                        let node_dist = Math.sqrt(
-                            Math.pow(n.x - graph_width / 2, 2) + Math.pow(n.y - graph_height / 2, 2)
-                        );
-                        let k = -0.01;
-                        let radius_dist = n.type * radius;
-                        let diff = node_dist - radius_dist;
-                        switch (n.type) {
-                            case 0:
-                                n.fx = graph_width / 2;
-                                n.fy = graph_height / 2;
-                                break;
-                            default:
-                                n.vx += Math.min(
-                                    Math.max(k * (n.x - graph_width / 2) * diff, -100),
-                                    100
-                                );
-                                n.vy += Math.min(
-                                    Math.max(k * (n.y - graph_height / 2) * diff, -100),
-                                    100
-                                );
-                                break;
-                        }
-                    });
-                });
 
             let link = container.selectAll(".link");
 
@@ -401,16 +421,19 @@ export default {
             this.chart = Object.assign(container.node(), {
                 update({nodes, links}) {
 
-                    const old = new Map(node.data().map(d => [d.address, d]));
-                    links = links.map(d => Object.assign({}, d));
-                    nodes = nodes.map(d => Object.assign(old.get(d.address) || {}, d));
+                    // const old = new Map(node.data().map(d => [d.address, d]));
+                    let newLinks = links//.map(d => Object.assign({}, d));
+                    let newNodes = nodes//.map(d => Object.assign(old.get(d.address) || {}, d));
 
                     link = link
-                        .data(links, d => [d.source, d.target])
-                        .join(enter=>enter.insert("line", ":first-child")).style("stroke", "rgba(50, 50, 93, 0.4)").attr('class', 'link');
+                        .data(newLinks, d => [d.source, d.target])
+                        .join(enter=>enter.insert("line"))
+                        .style("stroke", "rgba(50, 50, 93, 0.4)")
+                        .attr("stroke-opacity", d => d.source.type == 0 || d.target.type == 0 ? 0 : 0.3)
+                        .attr('class', 'link');
 
                     node = node
-                        .data(nodes, d => d.address)
+                        .data(newNodes, d => d.address)
                         .join(enter => {
                             let n = enter.append("g")
                                 .attr("class", "node")
@@ -434,19 +457,16 @@ export default {
                             return n;
                         });
 
-                    simulation.nodes(nodes).on("tick", ()=>{vue.ticked(link, node)});
-                    simulation.force("link").links(links);
-                    simulation.alpha(1).restart();
+                    vue.simulate(simulation, newNodes, newLinks, () => vue.ticked(link, node));
                 }
             });
 
             this.chart.update(this.chartData);
 
         window.addEventListener("resize", ()=>{
-            let width = document.getElementById('network_graph').getBoundingClientRect().width;
-            let height = document.getElementById('network_graph').getBoundingClientRect().height;
-            this.updateCircles(width, height)
-            simulation.force("center", d3.forceCenter(width / 2, height / 2));
+            this.width = document.getElementById('network_graph').getBoundingClientRect().width;
+            this.height = document.getElementById('network_graph').getBoundingClientRect().height;
+            this.updateCircles(this.width, this.height)
             this.chart.update(this.chartData);
         });
 
@@ -463,105 +483,103 @@ export default {
 
 <style>
 #network_graph {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-content: stretch;
-    align-items: stretch;
-    position: relative;
-    overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-content: stretch;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
 }
 
 #network_graph svg {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 #network_graph .node {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #network_graph .node-label {
-    font-family: sans-serif;
-    stroke: #000;
+  font-family: sans-serif;
+  stroke: #000;
 }
 
 #network_graph .link {
-    stroke: rgba(50, 50, 93, 0.4);
+  stroke: rgba(50, 50, 93, 0.4);
 }
 
 #network_graph text {
-    font-family: sans-serif;
-    font-size: 10px;
+  font-family: sans-serif;
+  font-size: 10px;
 }
 
 .network_info {
-    position: absolute;
-    top: 50px;
+  position: absolute;
+  top: 50px;
 }
 
 .network_info ul {
-    background: rgba(0, 0, 0, .8);
-    list-style: none;
-    border-radius: 15px;
-    color: #fff;
-    padding: 5px 5px;
-    display: flex;
-    justify-content: space-between;
+  background: rgba(0, 0, 0, 0.8);
+  list-style: none;
+  border-radius: 15px;
+  color: #fff;
+  padding: 5px 5px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .network_info ul li {
-    margin: 0 5px;
-    font-size: .9em;
+  margin: 0 5px;
+  font-size: 0.9em;
 }
 
 .controls {
-    position: absolute;
-    width: 100%;
-    bottom: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+  position: absolute;
+  width: 100%;
+  bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .controls label {
-    font-size: 1.2em;
-    pointer-events: none;
-    margin: -2px 5px 0 5px;
-    opacity: .3;
-    font-weight: 500;
+  font-size: 1.2em;
+  pointer-events: none;
+  margin: -2px 5px 0 5px;
+  opacity: 0.3;
+  font-weight: 500;
 }
 
 #zoom_range {
-    -webkit-appearance: none;
-    height: 5px;
-    border-radius: 5px;
-    background: rgba(0, 0, 0, .1);
-    outline: none;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
+  -webkit-appearance: none;
+  height: 5px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.1);
+  outline: none;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
 }
 
 #zoom_range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: #fff;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 #zoom_range::-moz-range-thumb {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: #fff;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
-
 </style>
