@@ -5,10 +5,11 @@
             <BlockchainHeader  :chainId="chainId"/>
             <Sentinels :chainId="chainId" :blocks="blocks"/>
         </div>
-        <div>
+        <div v-if="false">
             <Consensus :chainId="chainId"/>
             <BlockchainGraph :chainId="chainId" :blocks="blocks"/>
         </div>
+        <NetworkGraph :chainId="chainId" v-else/>
         <div>
             <div v-if="chainId !== 'serenity_control_chain'">
                 <WhitePool :chainId="chainId"/>
@@ -28,10 +29,13 @@ import ConfirmedBlockPool from "../components/Blockchain/ConfirmedBlockPool";
 import DarkPool from "../components/Blockchain/DarkPool";
 import Sentinels from "../components/Blockchain/Sentinels";
 import BlockchainHeader from "../components/Blockchain/BlockchainHeader";
+import NetworkGraph from "../components/Blockchain/NetworkGraph";
 
 export default {
     name: "Blockchain",
-    components: {BlockchainHeader, Sentinels, DarkPool, ConfirmedBlockPool, BlockchainGraph, Consensus, WhitePool},
+    components: {
+        NetworkGraph,
+        BlockchainHeader, Sentinels, DarkPool, ConfirmedBlockPool, BlockchainGraph, Consensus, WhitePool},
     props: ['id'],
     computed: {
         chainId(){

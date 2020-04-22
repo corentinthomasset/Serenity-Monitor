@@ -18,7 +18,7 @@
         </div>
         <ul class="list">
             <SentinelCard :chainId="chainId" :key="sentinel.address" :sentinel="sentinel"
-                          v-for="(sentinel, index) in sentinels" :style="`animation-delay: ${index/15}s`"/>
+                          v-for="(sentinel, index) in sentinels" :style="`animation-delay: ${index/50}s`"/>
         </ul>
     </div>
 </template>
