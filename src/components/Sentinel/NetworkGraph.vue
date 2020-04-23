@@ -12,7 +12,6 @@
       <label for="zoom_range">+</label>
     </div>
     <Tooltip :address="selectedNode" />
-    <button @click="newSentinel">CLick</button>
   </div>
 </template>
 

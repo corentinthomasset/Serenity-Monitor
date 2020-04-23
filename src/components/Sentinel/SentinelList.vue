@@ -14,7 +14,7 @@
             </ul>
         </div>
         <ul v-if="neighbors.length > 0" class="list">
-            <SentinelCard v-for="(neighbor, index) in neighbors" :key="neighbor.address" :sentinel="neighbor" :style="`animation-delay: ${index/15}s`"/>
+            <SentinelCard v-for="(neighbor, index) in neighbors" :key="neighbor.address" :sentinel="neighbor" :style="`animation-delay: ${index/50}s`"/>
         </ul>
         <Empty v-else desc="No neighbor" icon="wifi-slash"/>
     </div>
@@ -47,9 +47,9 @@ export default {
                 let address = netLink.source !== this.sentinel.address ? netLink.source : netLink.target;
                 neighbors.push(Sentinel.query().where('address', address).with('devices').get()[0]);
             });
-            neighbors.sort((a,b) => 
-                           (a[this.sort[this.sortIndex % 2]] > b[this.sort[this.sortIndex % 2]]) ? 1 
-                           : ((b[this.sort[this.sortIndex % 2]] > a[this.sort[this.sortIndex % 2]]) ? -1 
+            neighbors.sort((a,b) =>
+                           (a[this.sort[this.sortIndex % 2]] > b[this.sort[this.sortIndex % 2]]) ? 1
+                           : ((b[this.sort[this.sortIndex % 2]] > a[this.sort[this.sortIndex % 2]]) ? -1
                            : 0))
 
             if(this.sortDesc) {

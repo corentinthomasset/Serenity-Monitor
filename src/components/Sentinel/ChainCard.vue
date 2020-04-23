@@ -6,7 +6,7 @@
         <div class="chain_info card">
             <table class="card_body">
                 <tr>
-                    <th>Chain</th>
+                    <th>Chain Id</th>
                     <th>Current block</th>
                     <th>Index</th>
                 </tr>

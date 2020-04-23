@@ -11,6 +11,7 @@ import {
   faServer, faQuestion, faBan, faToggleOn, faToggleOff
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import './data.js';
 
 library.add(faWifi, faCog, faFingerprint, faBiohazard, faBan,
      faCheckCircle, faSortAlphaUp, faSortAlphaDown, faSearch,

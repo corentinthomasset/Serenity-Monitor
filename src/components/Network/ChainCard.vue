@@ -7,7 +7,7 @@
             <table class="card_body">
                 <tr>
                     <th>Devices</th>
-                    <th>Id</th>
+                    <th>Chain Id</th>
                     <th>Sentinels</th>
                     <th>Index</th>
                 </tr>
