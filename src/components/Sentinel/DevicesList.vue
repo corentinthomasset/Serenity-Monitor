@@ -2,7 +2,7 @@
     <div id="device_list">
         <h2>Devices</h2>
         <ul>
-            <DeviceCard v-for="device in devices" :key="device.ip" :device="device" v-on:attack="attack"/>
+            <DeviceCard v-for="device in devices" :key="device.ip" :device="device"/>
         </ul>
     </div>
 </template>

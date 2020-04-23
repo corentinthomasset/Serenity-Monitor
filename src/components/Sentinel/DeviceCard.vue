@@ -7,7 +7,6 @@
         <div :class="['device_status', status]">
             <font-awesome-icon :icon="statusIcon" class="icon"/>
         </div>
-        <button v-if="false" @click="attack()" class="attack">Attack !</button>
     </li>
 </template>
 
@@ -58,9 +57,6 @@ export default {
     methods: {
         stripName(name){
             return name.length < 20 ? name : name.substring(0,17) + "..."
-        },
-        attack(){
-            this.$emit('attack', this.device.ip, 'http_scan');
         }
     }
 
