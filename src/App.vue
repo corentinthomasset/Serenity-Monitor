@@ -173,6 +173,7 @@ h2 {
 /* width */
 ::-webkit-scrollbar {
   width: 7px;
+  height: 7px;
   cursor: pointer;
 }
 

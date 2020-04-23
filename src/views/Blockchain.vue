@@ -42,7 +42,7 @@ export default {
     props: ['id'],
     data(){
         return {
-            showNetwork: false
+            showNetwork: true
         }
     },
     computed: {

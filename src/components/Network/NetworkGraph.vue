@@ -124,6 +124,9 @@ export default {
             const currentTransform = d3.event.transform;
             d3.select("#network_graph > svg > g > g").attr("transform", currentTransform);
             d3.select("#zoom_range").property("value", currentTransform.k);
+        },
+        resizeListener(){
+            this.chart.update(this.chartData);
         }
 },
     watch: {
@@ -208,7 +211,10 @@ export default {
 
                             return n;
                         });
+                    let width = document.getElementById('network_graph').getBoundingClientRect().width;
+                    let height = document.getElementById('network_graph').getBoundingClientRect().height;
 
+                    simulation.force("center", d3.forceCenter(width / 2, height / 2));
                     simulation.nodes(nodes).on("tick", ()=>{vue.ticked(link, node)});
                     simulation.force("link").links(links);
                     simulation.alpha(1).restart();
@@ -217,13 +223,7 @@ export default {
 
             this.chart.update(this.chartData);
 
-        window.addEventListener("resize", ()=>{
-            let width = document.getElementById('network_graph').getBoundingClientRect().width;
-            let height = document.getElementById('network_graph').getBoundingClientRect().height;
-
-            simulation.force("center", d3.forceCenter(width / 2, height / 2));
-            this.chart.update(this.chartData);
-        });
+        window.addEventListener("resize", this.resizeListener);
 
         Bus.$on('sentinel::mouseover', address => {
             this.nodeFocus(address, link, tip);
@@ -232,6 +232,10 @@ export default {
         Bus.$on('sentinel::mouseleave', address => {
             this.nodeBlur(address, link, tip);
         });
+    },
+    beforeDestroy() {
+        window.removeEventListener("resize", this.resizeListener);
+        Bus.$off();
     }
 }
 </script>
