@@ -8,13 +8,13 @@
         </div>
         <div>
             <div @click="showNetwork = !showNetwork" class="network_switch">{{toggleText}} <font-awesome-icon class="icon" :icon="['fas', toggleIcon]"/></div>
-            <NetworkGraph :sentinel="sentinel"  v-if="showNetwork"/>
-            <div v-else>
+            <div v-if="!showNetwork">
                 <h1>Packet filter</h1>
                 <FilterActivity :sentinel="sentinel"/>
                 <DevicesList :sentinel="sentinel"/>
                 <FilterRules :sentinel="sentinel"/>
             </div>
+            <NetworkGraph :sentinel="sentinel"  v-else/>
         </div>
         <div>
             <h1>Blockchains</h1>
@@ -42,7 +42,7 @@ export default {
     props: ['address'],
     data(){
         return {
-            showNetwork: false
+            showNetwork: true
         }
     },
     computed: {

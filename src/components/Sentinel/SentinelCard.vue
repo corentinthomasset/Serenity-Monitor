@@ -1,5 +1,5 @@
 <template>
-    <li class="list_card" @click="goToSentinel()">
+    <li class="list_card" @click="goToSentinel()" @mouseover="overSentinel()" @mouseleave="leaveSentinel()">
         <NodeIcon v-bind:hash="sentinel.address"/>
         <div class="sentinel_info card">
             <table class="card_body">
@@ -24,6 +24,7 @@
 import Hash from "../Hash";
 import NetworkLink from "../../store/Models/NetworkLink";
 import NodeIcon from "../NodeIcon";
+import Bus from "../../bus.js";
 export default {
     name: 'SentinelCard',
     props: ['sentinel'],
@@ -39,6 +40,12 @@ export default {
     methods: {
         goToSentinel(){
             this.$router.push({name: 'sentinel', params:{address: this.sentinel.address}});
+        },
+        overSentinel(){
+            Bus.$emit('sentinel::mouseover', this.sentinel.address);
+        },
+        leaveSentinel(){
+            Bus.$emit('sentinel::mouseleave', this.sentinel.address);
         }
     }
 };

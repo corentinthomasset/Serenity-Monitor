@@ -9,7 +9,6 @@
 
 <script>
 import DeviceCard from "./DeviceCard";
-import Socket from '../../socket';
 export default {
     name: "DevicesList",
     components: {DeviceCard},
@@ -17,11 +16,6 @@ export default {
     computed:{
         devices(){
             return this.sentinel.devices;
-        }
-    },
-    methods:{
-        attack(...args){
-            Socket.emit('attack', this.sentinel.address, ...args);
         }
     }
 }

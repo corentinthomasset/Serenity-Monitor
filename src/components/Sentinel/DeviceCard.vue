@@ -7,7 +7,7 @@
         <div :class="['device_status', status]">
             <font-awesome-icon :icon="statusIcon" class="icon"/>
         </div>
-        <button @click="attack()" class="attack">Attack !</button>
+        <button v-if="false" @click="attack()" class="attack">Attack !</button>
     </li>
 </template>
 

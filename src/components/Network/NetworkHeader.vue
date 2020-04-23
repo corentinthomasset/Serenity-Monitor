@@ -1,7 +1,7 @@
 <template>
     <div id="network_header">
         <div class="network_icon">
-            <font-awesome-icon class="icon" :icon="['fas', 'question']"/>
+            <font-awesome-icon class="icon" :icon="['fas', 'shield-alt']"/>
         </div>
         <h3> Serenity Net</h3>
         <div class="net_info card">
